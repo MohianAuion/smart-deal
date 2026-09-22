@@ -1,39 +1,67 @@
-import React, { use } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
+import { PiEyeglassesFill, PiEyeglassesLight } from 'react-icons/pi';
 
 const Login = () => {
 
+  const[showPassword, setShowPassword]=useState(false);
+  const[success, setSuccess]=useState(false);
+  const[error, setError]=useState("");
+
+  const location=useLocation();
+  const navigate=useNavigate();
+  
+  console.log(location);
   const{signInUser, signInUserWithGoogle}=use(AuthContext);
+
   const handleLogin=e=>{
    e.preventDefault();
 
-    
+    setSuccess(false);
+    setError("");
+
     const email=e.target.email.value;
     const password=e.target.password.value;
     console.log(email, password);
 
     // sign in user
     signInUser(email, password)
-    .then(result=>{
-      console.log(result.user);
+    .then(()=>{
+      navigate(location.state || "/", {replace:true})
+    })
+    .then(()=>{
+      setSuccess(true);
+      e.target.reset();
+      
     })
     .catch(error=>{
-      console.log(error.message);
+      setError(error.message);
+      e.target.reset();
     })
+  }
+
+  // handle show password
+  const handleShowPassword=()=>{
+setShowPassword(!showPassword)
   }
 
   // login with google
   const handleGoogleLogin=()=>{
-    signInUserWithGoogle();
+    signInUserWithGoogle()
+    .then(()=>{
+      navigate(location.state || "/", { replace: true })
+    })
   }
+
+  
     return (
        <div className=" bg-base-200 min-h-screen ">
   <div className='w-10/12 mx-auto py-36'>
     
      <div className="card bg-base-100 mx-auto max-w-sm shrink-0 shadow-2xl pt-7 rounded-lg px-4 border border-gray-500 ">
          <h1 className="text-4xl font-bold text-center">Login Here</h1>
-         <p className='font-medium text-center mt-2'>Don't have an account? <Link to="/auth/register" className='text-yellow-400 font-bold underline'> Register Now</Link></p>
+         <p className='font-medium text-center mt-2'>Don't have an account? <Link to="/auth/register" state={location.state} replace className='text-yellow-400 font-bold underline'> Register Now</Link></p>
         
       <div className="card-body">
          
@@ -43,8 +71,23 @@ const Login = () => {
           <label className="label">Email</label>
           <input type="email" className="input" placeholder="Email" name="email" required />
           <label className="label">Password</label>
-          <input type="password" className="input" placeholder="Password" name="password" required />
+          <div className="relative" >
+                      <input type={showPassword? "text": "password"} className="input" placeholder="Password" name="password" required />
+                      <button onClick={handleShowPassword} type="button"  className="absolute top-2.5 right-3 text-xl">
+                        {
+                          showPassword ? <PiEyeglassesLight></PiEyeglassesLight> : <PiEyeglassesFill></PiEyeglassesFill> 
+                        }
+                      </button>
+                      
+                    </div>
+                    {
+            success && <p className='text-green-500 font-bold mt-1'>You are logged in successfully!</p>
+          }
+          {
+            error && <p className='text-red-500 font-bold mt-1'>{error}</p>
+          }
           <div><a className="link link-hover">Forgot password?</a></div>
+           
           <button className="btn bg-yellow-500 mt-4">Login</button>
         </fieldset>
         </form>

@@ -10,6 +10,7 @@ import MyBids from "../../pages/MyBids/MyBids";
 import CreateProducts from "../../pages/CreateProducts/CreateProducts";
 import Error from "../../pages/Error/Error";
 import ProductDetails from "../../pages/ProductDetails/ProductDetails";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -27,15 +28,21 @@ const router = createBrowserRouter([
       },
       {
         path: "myproducts",
-        Component: MyProducts,
+        element: <PrivateRoute>
+          <MyProducts></MyProducts>
+        </PrivateRoute>
       },
       {
         path: "mybids",
-        Component: MyBids,
+        element: <PrivateRoute>
+          <MyBids></MyBids>
+        </PrivateRoute>
       },
       {
         path: "createproducts",
-        Component: CreateProducts,
+         element: <PrivateRoute>
+          <CreateProducts></CreateProducts>
+        </PrivateRoute>
       },
       {
         path:"productdetails/:id",

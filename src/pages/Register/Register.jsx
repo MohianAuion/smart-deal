@@ -1,14 +1,25 @@
-import React, { use } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useLocation, useNavigate,  } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
+import { PiEyeglassesFill, PiEyeglassesLight } from 'react-icons/pi';
 
 const Register = () => {
 
-    const{createUser, signInUserWithGoogle}=use(AuthContext);
+    const{createUser, updateUser, signInUserWithGoogle}=use(AuthContext);
+    const[showPassword, setShowPassword]=useState(false);
+    const[success, setSuccess]=useState(false);
+    const[error, setError]=useState(false);
+
+    const location=useLocation();
+   const navigate=useNavigate(); 
 
     // handle register
     const handleRegister=e=>{
         e.preventDefault();
+
+        setSuccess(false);
+    setError("");
+    
 const name=e.target.name.value;
         const email=e.target.email.value;
         const photo=e.target.photo.value;
@@ -16,30 +27,53 @@ const name=e.target.name.value;
         console.log(name, email, password, photo);
 
         createUser(email, password)
-        .then(result=>{
-            console.log(result.user);
-        })
+        .then(()=>{
+          return updateUser(name, photo);
+           })
+           .then(()=>{
+            setSuccess(true);
+            navigate(location.state || "/", {replace: true})
+
+           })
         .catch(error=>{
-            console.log(error.message);
+            
+            setError(error.message)
+            e.target.reset();
         })
+
+    }
+
+    // handle show password
+    const handleShowPassword=()=>{
+      console.log("showpassword")
+      setShowPassword(!showPassword)
 
     }
 
     // handle google login
   const handleGoogleLogin=()=>{
-    signInUserWithGoogle();
+    signInUserWithGoogle()
+    .then(()=>{
+      navigate(location.state || "/", { replace: true })
+    })
+    .catch(error=>{
+      setError(error.message)
+    })
+    
   }
+
+  
     return (
       <div className=" bg-base-200 min-h-screen ">
   <div className='w-10/12 mx-auto py-36'>
     
      <div className="card bg-base-100 mx-auto max-w-sm shrink-0 shadow-2xl pt-7 rounded-lg px-4 border border-gray-500 ">
          <h1 className="text-4xl font-bold text-center">Register Here</h1>
-         <p className='font-medium text-center mt-2'>Already have an account?<Link to="/auth" className='text-yellow-400 font-bold underline'>  Login Now </Link></p>
+         <p className='font-medium text-center mt-2'>Already have an account?<Link to="/auth" state={location.state} className='text-yellow-400 font-bold underline'>  Login Now </Link></p>
         
       <div className="card-body">
          
-        <form onSubmit={handleRegister}>
+         <form onSubmit={handleRegister}>
 
             <fieldset className="fieldset">
 
@@ -54,7 +88,21 @@ const name=e.target.name.value;
           <input type="text" className="input" placeholder="photo url" name="photo"/>
           {/* password */}
           <label className="label">Password</label>
-          <input type="password" className="input" placeholder="Password" name="password" required />
+          <div className="relative" >
+            <input type={showPassword? "text": "password"} className="input" placeholder="Password" name="password" required />
+            <button onClick={handleShowPassword} type="button"  className="absolute top-2.5 right-3 text-xl">
+              {
+                showPassword ? <PiEyeglassesLight></PiEyeglassesLight> : <PiEyeglassesFill></PiEyeglassesFill> 
+              }
+            </button>
+            
+          </div>
+          {
+            success && <p className='text-green-500 font-bold mt-1'>Your account has been registered successfully!</p>
+          }
+          {
+            error && <p className='text-red-500 font-bold mt-1'>{error}</p>
+          }
           <button className="btn bg-yellow-500 mt-4">Register</button>
         </fieldset>
         </form>
