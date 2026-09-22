@@ -7,10 +7,9 @@ import noImage from "../../assets/noImage.png";
 const AllProducts = () => {
 
    const allProductsdata=useLoaderData();
+
      const[showAllBids, setShowAllBids]=useState(false);
      const visibleBids= showAllBids? allProductsdata : allProductsdata.slice(0, 9);
-
-    console.log(allProductsdata);
 
     const handleSeeMore=()=>{
         console.log("see more")
@@ -44,7 +43,7 @@ e.currentTarget.src= noImage
     <h2 className="card-title">{product.title}</h2>
     <p className='text-green-500 font-semibold'> $ {`${product.price_min} - ${product.price_max}`}</p>
     <div className="card-actions">
-      <Link className="btn btn-outline border-yellow-400 text-yellow-500 font-medium w-full">View Details</Link>
+      <Link to={`/productdetails/${product._id}`} className="btn btn-outline border-yellow-400 text-yellow-500 font-medium w-full">View Details</Link>
     </div>
   </div>
 </div>)
