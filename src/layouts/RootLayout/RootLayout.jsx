@@ -7,7 +7,7 @@ const RootLayout = () => {
     return (
         <div>
          <header>
-             <h2> Root Layout </h2>
+            
           <Navbar></Navbar>
          </header>
          <main>
