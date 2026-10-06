@@ -30,7 +30,7 @@ const AllProducts = () => {
     <img
       src={product.image || noImage}
       alt=""
-      className="rounded-xl"
+      className="rounded-xl h-100 w-100 object-cover"
       onError={(e)=>{
         e.preventDefault()
 console.log(e);

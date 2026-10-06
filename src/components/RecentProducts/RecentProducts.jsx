@@ -1,6 +1,7 @@
 import React, { use, useState } from 'react';
 import Product from '../Product/Product';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router';
 
 const RecentProducts = ({recentProductsPromise}) => {
     const products=use(recentProductsPromise);
@@ -22,8 +23,10 @@ const RecentProducts = ({recentProductsPromise}) => {
                     SmartDeals helps you sell, resell, and shop from trusted local sellers — all in one place!
                 </p>
                 <div className='flex justify-center gap-3'>
-                    <button className='btn bg-yellow-400'>Watch All Products</button>
-                    <button className='btn'>Post an Product</button>
+                    <Link to="/allproducts" className='btn bg-yellow-400'>Watch All Products</Link>
+                    <Link to="/createproducts" className='btn'>Post an Product</Link>
+                   
+                   
                 </div>
             </div>
            {/* products */}

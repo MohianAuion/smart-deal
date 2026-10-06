@@ -2,8 +2,10 @@ import React, { use, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
 import { PiEyeglassesFill, PiEyeglassesLight } from 'react-icons/pi';
+import Loader from '../../components/Loader/Loader';
 
 const Login = () => {
+const{signInUser, resetPassword, signInUserWithGoogle, authLoading}=use(AuthContext);
 
   const[showPassword, setShowPassword]=useState(false);
   const[success, setSuccess]=useState(false);
@@ -12,8 +14,6 @@ const Login = () => {
   const location=useLocation();
   const navigate=useNavigate();
   
-  console.log(location);
-  const{signInUser, signInUserWithGoogle}=use(AuthContext);
 
   const handleLogin=e=>{
    e.preventDefault();
@@ -35,9 +35,17 @@ const Login = () => {
       e.target.reset();
       
     })
-    .catch(error=>{
-      setError(error.message);
-      e.target.reset();
+    .catch((error)=>{
+      
+      if(error.code==="auth/invalid-credential"){
+        setError("Invalid email or password.");
+      }
+      else if(error.code==="auth/too-many-requests"){
+        setError("Too many failed attempts. Please try again later.");
+      }
+      else{
+        setError("Something went wrong. Please try again.");
+      }
     })
   }
 
@@ -46,15 +54,36 @@ const Login = () => {
 setShowPassword(!showPassword)
   }
 
+  // handle reset password
+  const handleResetPassword=(e)=>{
+    e.preventDefault();
+    const email=e.currentTarget.form.email.value;
+    if(!email){
+      return setError("Please enter your email first.")
+    }
+    
+    resetPassword(email)
+    .then(()=>{
+alert("Password reset email has been sent. Please check your inbox.")
+    })
+    .catch((error)=>{
+     setError(error.message);
+    })
+    
+  }
+
   // login with google
   const handleGoogleLogin=()=>{
     signInUserWithGoogle()
-    .then(()=>{
+    .then((result)=>{
+      console.log(result.user)
       navigate(location.state || "/", { replace: true })
     })
   }
 
-  
+  if(authLoading){
+    return <Loader></Loader>
+  }
     return (
        <div className=" bg-base-200 min-h-screen ">
   <div className='w-10/12 mx-auto py-36'>
@@ -86,7 +115,11 @@ setShowPassword(!showPassword)
           {
             error && <p className='text-red-500 font-bold mt-1'>{error}</p>
           }
-          <div><a className="link link-hover">Forgot password?</a></div>
+          <div>
+            <button onClick={handleResetPassword}  type="button" className="link link-hover hover:underline">
+              Forgot password?
+            </button>
+           </div>
            
           <button className="btn bg-yellow-500 mt-4">Login</button>
         </fieldset>

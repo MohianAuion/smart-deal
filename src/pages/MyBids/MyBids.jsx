@@ -9,17 +9,39 @@ const MyBids = () => {
   const[showAllBids, setShowAllBids]=useState(false);
   const visibleBids= showAllBids ? myBids : myBids.slice(0, 10);
 
+
+  // useEffect(() => {
+  //   if (user?.email) {
+  //     fetch(`http://localhost:3000/bids?email=${user.email}`,{
+  //       headers : {
+  //         authorization : `Bearer ${user.accessToken}`
+  //       }
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log(user.accessToken)
+  //         const sortBidsPrice=[...data].sort((a, b)=>b.bid_price - a.bid_price)
+  //         setMyBids(sortBidsPrice);
+  //       });
+  //   }
+  // }, [user]);
+
+  // generate token by myself
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/bids?email=${user.email}`)
+      fetch(`http://localhost:3000/bids?email=${user.email}`,{
+        headers : {
+          authorization : `Bearer ${localStorage.getItem("token")}`
+        }
+      })
         .then((res) => res.json())
         .then((data) => {
-          console.log("my bids", data);
+          console.log(user.accessToken)
           const sortBidsPrice=[...data].sort((a, b)=>b.bid_price - a.bid_price)
           setMyBids(sortBidsPrice);
         });
     }
-  }, [user?.email]);
+  }, [user]);
 
   const handleRemoveBid = (_id) => {
     Swal.fire({
