@@ -7,7 +7,7 @@ const MyBids = () => {
   const { user } = use(AuthContext);
   const [myBids, setMyBids] = useState([]);
   const[showAllBids, setShowAllBids]=useState(false);
-  const visibleBids= showAllBids ? myBids : myBids.slice(0, 10);
+  const visibleBids= showAllBids ? myBids : myBids.slice(0, 7);
 
 
   // useEffect(() => {

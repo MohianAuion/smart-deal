@@ -1,9 +1,12 @@
 import React, { use, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const CreateProducts = () => {
   const { user } = use(AuthContext);
+ 
+  const navigate=useNavigate();
 
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -58,7 +61,7 @@ const CreateProducts = () => {
   confirmButtonColor: "#eab308",
   confirmButtonText: "Okay"
 });
-        e.target.reset();
+       navigate("/myproducts");
       }
       })
       .catch(()=>{
@@ -106,6 +109,7 @@ const CreateProducts = () => {
                   <option>Home Appliances</option>
                   <option>Vehicles</option>
                   <option>Fashion</option>
+                  <option>Sports</option>
                 </select>
               </div>
 

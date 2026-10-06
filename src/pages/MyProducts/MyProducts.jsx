@@ -6,8 +6,11 @@ import Swal from 'sweetalert2';
 const MyProducts = () => {
     const{user}=use(AuthContext);
     const showModalRef=useRef(null);
+
     const[myProducts, setMyProducts]=useState([]);
     const[editedProduct, setEditedProduct]=useState([]);
+    const[showAllMyProducts, setShowMyAllProducts]=useState(false)
+    const visibleMyProducts= showAllMyProducts ? myProducts : myProducts.slice(0, 7);
   
 
   useEffect(()=>{
@@ -112,11 +115,14 @@ if(data.modifiedCount){
       showModalRef.current.close()
     }
 
+    const handleSeeAllMyProduct=()=>{
+       setShowMyAllProducts(!showAllMyProducts);
+    }
     return (
         <div className='bg-gray-100 py-14'>
       <div className='w-10/12 mx-auto'>
 
-          <h2 className='text-center text-4xl font-bold'>My Products : {myProducts.length}</h2>
+          <h2 className='text-center text-4xl font-bold mb-5'>My Products : <span className='text-yellow-400 font-bold'>{myProducts.length}</span></h2>
          {/* table */}
                <div className="overflow-x-auto mt-4">
                  <table className="table table-fixed w-full bg-white">
@@ -145,7 +151,7 @@ if(data.modifiedCount){
                    </thead>
        
                    <tbody>
-                     {myProducts.map((myProduct, index) => (
+                     {visibleMyProducts.map((myProduct, index) => (
                        <tr key={myProduct._id}>
                          {/* sl no */}
                          <td className="text-center text-gray-600 font-bold">{index + 1}</td>
@@ -212,6 +218,14 @@ if(data.modifiedCount){
                      ))}
                    </tbody>
                  </table>
+
+{/* My All Products */}
+                 <div className='flex justify-center mt-4'>
+                  {
+                    showAllMyProducts? <button onClick={handleSeeAllMyProduct} className='btn btn-warning'> Less All My Products</button> : <button onClick={handleSeeAllMyProduct} className='btn btn-warning'> See All My Products</button>  
+                  }
+
+                 </div>
                  
                  {/* modal */}
                 
@@ -352,15 +366,6 @@ if(data.modifiedCount){
                 required
               ></textarea>
             </div>
-
-            {/* Messages
-            {success && (
-              <p className="text-green-500 mt-3">{success}</p>
-            )}
-
-            {error && (
-              <p className="text-red-500 mt-3">{error}</p>
-            )} */}
 
             <button className="btn bg-green-500 text-white font-bold w-full mt-6">
               Update Product
