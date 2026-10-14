@@ -65,7 +65,7 @@ const MyBids = () => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/bids/${_id}`, {
+                fetch(`https://smart-deal-server-six.vercel.app/bids/${_id}`, {
                     method: "DELETE",
                 })
                     .then((res) => res.json())

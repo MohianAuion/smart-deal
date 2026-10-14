@@ -1,8 +1,7 @@
 import React, { Suspense } from 'react';
 import RecentProducts from '../../components/RecentProducts/RecentProducts';
 
-// const recentProductsPromise=fetch('http://localhost:3000/latestproducts').then(res=>res.json());
-const recentProductsPromise=fetch('https://smart-deal-server-six.vercel.app/latestproducts').then(res=>res.json());
+const recentProductsPromise=fetch(`${import.meta.env.VITE_API_URL}/latestproducts`).then(res=>res.json());
 const Home = () => {
     return (
         <div>
