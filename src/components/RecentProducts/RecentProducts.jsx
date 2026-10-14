@@ -14,33 +14,34 @@ const RecentProducts = ({recentProductsPromise}) => {
         <div>
 
             {/* banner */}
-           <div className="bg-gradient-to-br from-[#FFFDE7] via-[#FFF9C4] to-[#FFF3B0] py-20">
-                <h2 className='text-5xl text-center leading-14 font-medium'>
+           <div className="bg-gradient-to-br from-[#FFFDE7] via-[#FFF9C4] to-[#FFF3B0] py-12 sm:py-16 md:py-20 px-4 sm:px-6">
+                <h2 className='text-3xl sm:text-4xl md:text-5xl text-center leading-tight md:leading-14 font-medium'>
                     Deal your <span className='text-yellow-500'>Products </span>
-<br/> in a <span className='text-yellow-500'>Smart</span> way !
+                    <br/> in a <span className='text-yellow-500'>Smart</span> way !
                 </h2>
-                <p className='text-gray-500 text-center py-4'>
+                <p className='text-gray-500 text-center py-4 max-w-2xl mx-auto text-sm sm:text-base'>
                     SmartDeals helps you sell, resell, and shop from trusted local sellers — all in one place!
                 </p>
-                <div className='flex justify-center gap-3'>
-                    <Link to="/allproducts" className='btn bg-yellow-400'>Watch All Products</Link>
-                    <Link to="/createproducts" className='btn'>Post an Product</Link>
-                   
-                   
+                <div className='flex flex-col sm:flex-row justify-center items-center gap-3'>
+                    <Link to="/allproducts" className='btn bg-yellow-400 w-full sm:w-auto'>Watch All Products</Link>
+                    <Link to="/createproducts" className='btn w-full sm:w-auto'>Post an Product</Link>
                 </div>
             </div>
-           {/* products */}
-           <div className='w-10/12 mx-auto mt-16'>
 
-             <h2 className='text-4xl text-center font-medium mb-5'>Recent <span className='text-yellow-500'>Products</span></h2>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+           {/* products */}
+           <div className='w-11/12 sm:w-10/12 mx-auto mt-10 sm:mt-12 md:mt-16'>
+
+             <h2 className='text-3xl sm:text-4xl text-center font-medium mb-5'>Recent <span className='text-yellow-500'>Products</span></h2>
+
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5'>
                 {
-                visibleProducts.map(product=><Product 
+                visibleProducts.map(product=><Product
                     key={product._id}
                     product={product}
                     ></Product>)
             }
             </div>
+
 {/* see more and see less */}
            {
             products.length > 6 &&  <div className='flex justify-center mb-12 mt-4'>
@@ -56,3 +57,4 @@ const RecentProducts = ({recentProductsPromise}) => {
 };
 
 export default RecentProducts;
+

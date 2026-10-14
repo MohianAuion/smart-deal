@@ -14,42 +14,42 @@ const AuthProvider = ({children}) => {
    
 
     // on auth state change
-    // useEffect(()=>{
-    //    const unsubscribe= onAuthStateChanged(auth, currentUser=>{
-    //         setUser(currentUser);
-    //     });
-    //     return ()=>{
-    //         unsubscribe();
-    //     };
-    // },[])
-
-    // generate token by myself(onAuthStateChange)
     useEffect(()=>{
        const unsubscribe= onAuthStateChanged(auth, currentUser=>{
             setUser(currentUser);
-            setLoading(false);
-            if(currentUser){
-
-                const loggedUser={email : currentUser.email};
-
-                fetch("http://localhost:3000/getToken",{
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"application/json",
-                    },
-                    body: JSON.stringify(loggedUser)
-                })
-                .then(res=>res.json())
-                .then(data=>{
-                    console.log("after generate the token", data);
-                    localStorage.setItem("token", data.token)
-                })
-            }
         });
         return ()=>{
             unsubscribe();
         };
     },[])
+
+    // generate token by myself(onAuthStateChange)
+    // useEffect(()=>{
+    //    const unsubscribe= onAuthStateChanged(auth, currentUser=>{
+    //         setUser(currentUser);
+    //         setLoading(false);
+    //         if(currentUser){
+
+    //             const loggedUser={email : currentUser.email};
+
+    //             fetch("https://smart-deal-server-six.vercel.app/getToken",{
+    //                 method:"POST",
+    //                 headers:{
+    //                     "Content-Type":"application/json",
+    //                 },
+    //                 body: JSON.stringify(loggedUser)
+    //             })
+    //             .then(res=>res.json())
+    //             .then(data=>{
+    //                 console.log("after generate the token", data);
+    //                 localStorage.setItem("token", data.token)
+    //             })
+    //         }
+    //     });
+    //     return ()=>{
+    //         unsubscribe();
+    //     };
+    // },[])
 
 
     // sign in  with email and password
