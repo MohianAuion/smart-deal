@@ -34,7 +34,7 @@ const ProductDetails = () => {
     const visibleBids = showAllBids ? bids : bids.slice(0, 5);
 
     useEffect(() => {
-        fetch(`https://smart-deal-server-six.vercel.app/products/bids/${productId}`)
+        fetch(`${import.meta.env.VITE_API_URL}/products/bids/${productId}`)
             .then(res => res.json())
             .then(data => {
                 console.log("bid for this product", data);
@@ -64,7 +64,7 @@ const ProductDetails = () => {
             status: "pending"
         };
 
-        fetch('https://smart-deal-server-six.vercel.app/bids', {
+        fetch(`${import.meta.env.VITE_API_URL}/bids`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -42,7 +42,7 @@ const CreateProducts = () => {
             sale_status: "On Sale",
         };
 
-        fetch("https://smart-deal-server-six.vercel.app/products", {
+        fetch(`${import.meta.env.VITE_API_URL}/products`, {
             method: "POST",
             headers: {
                 "content-type": "application/json",

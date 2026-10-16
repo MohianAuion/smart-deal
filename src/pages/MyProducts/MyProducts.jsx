@@ -17,7 +17,7 @@ const MyProducts = () => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`https://smart-deal-server-six.vercel.app/products?email=${user.email}`)
+            fetch(`${import.meta.env.VITE_API_URL}/products?email=${user.email}`)
                 .then(res => res.json())
                 .then(data => {
                     console.log("my product data", data);
@@ -49,7 +49,7 @@ const MyProducts = () => {
             seller_contact: e.target.contact.value,
         };
 
-        fetch(`https://smart-deal-server-six.vercel.app/products/${editedProduct._id}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/products/${editedProduct._id}`, {
             method: "PATCH",
             headers: {
                 "content-type": "application/json"
@@ -86,7 +86,7 @@ const MyProducts = () => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/products/${_id}`, {
+                fetch(`${import.meta.env.VITE_API_URL}/products/${_id}`, {
                     method: "DELETE",
                 })
                     .then(res => res.json())
